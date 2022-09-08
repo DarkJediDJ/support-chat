@@ -13,14 +13,16 @@ const addr = ":8080"
 func main() {
 	a := server.App{}
 
-	conn, err := kafka.DialLeader(context.Background(), "tcp", "localhost:9092", "support_chat", 0)
+	conn, err := kafka.DialLeader(context.Background(), "tcp", "localhost:9092", "user-messages", 0)
 	if err != nil {
 		if err != nil {
 			log.Printf("An Error Occured %v", err)
 		}
 	}
+	defer conn.Close()
 
 	a.New(conn)
 
 	a.Run(addr)
+
 }
