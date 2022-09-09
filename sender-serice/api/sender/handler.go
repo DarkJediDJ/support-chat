@@ -18,7 +18,6 @@ type Message struct {
 }
 
 func Init(c *kafka.Conn) *Handler {
-
 	return &Handler{
 		conn: c,
 	}

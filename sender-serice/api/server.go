@@ -13,8 +13,11 @@ type App struct {
 	Router *mux.Router
 }
 
-func (a *App) New(conn *kafka.Conn) {
+func Init() *App {
+	return &App{}
+}
 
+func (a *App) InitRouter(conn *kafka.Conn) {
 	myRouter := mux.NewRouter().StrictSlash(false)
 	myRouter.HandleFunc("/", sender.Init(conn).Send).Methods("POST")
 	a.Router = myRouter
