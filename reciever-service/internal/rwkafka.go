@@ -8,9 +8,15 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
+type IncMessage struct {
+	Id     int    `json:"ID"`
+	Text   string `json:"message"`
+	Answer string `json:"answer,omitempty"`
+}
+
 func KafkaReader(kafkaURL, topic string) *kafka.Reader {
 	brokers := strings.Split(kafkaURL, ",")
-	
+
 	return kafka.NewReader(kafka.ReaderConfig{
 		Brokers:  brokers,
 		Topic:    topic,

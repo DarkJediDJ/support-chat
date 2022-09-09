@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"context"
+	"encoding/json"
 	"log"
 
 	i "github.com/DarkJediDJ/support-chat/reciever-service/internal"
@@ -21,16 +21,30 @@ func main() {
 
 	defer conn.Close()
 
+	var message i.IncMessage
+
 	for {
 		m, err := reader.ReadMessage(context.Background())
 		if err != nil {
 			log.Printf("An Error Occured %v", err)
+			continue
 		}
-		ins := []byte(`, "answer": "hi, aboba!"`) // Note the leading comma.
-		closingBraceIdx := bytes.LastIndexByte(m.Value, '}')
-		m.Value = append(m.Value[:closingBraceIdx], ins...)
-		m.Value = append(m.Value, '}')
-		i.KafkaWriter(conn, string(m.Value))
+
+		err = json.Unmarshal(m.Value, &message)
+		if err != nil {
+			log.Fatalf("An Error Occured %v", err)
+			continue
+		}
+
+		message.Answer = "hi,aboba"
+
+		outMesssage, err := json.Marshal(message)
+		if err != nil {
+			log.Printf("An Error Occured %v", err)
+			continue
+		}
+
+		i.KafkaWriter(conn, string(outMesssage))
 	}
 
 }
