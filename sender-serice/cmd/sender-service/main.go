@@ -11,7 +11,7 @@ import (
 const addr = ":8080"
 
 func main() {
-	a := server.Init()
+	a := server.NewApp()
 
 	conn, err := kafka.DialLeader(context.Background(), "tcp", "localhost:9092", "user-messages", 0)
 	if err != nil {
