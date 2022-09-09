@@ -10,6 +10,7 @@ import (
 
 func KafkaReader(kafkaURL, topic string) *kafka.Reader {
 	brokers := strings.Split(kafkaURL, ",")
+	
 	return kafka.NewReader(kafka.ReaderConfig{
 		Brokers:  brokers,
 		Topic:    topic,

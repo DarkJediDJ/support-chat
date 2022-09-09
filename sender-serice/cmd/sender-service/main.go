@@ -22,5 +22,4 @@ func main() {
 	a.InitRouter(conn)
 
 	a.Run(addr)
-
 }

@@ -16,10 +16,9 @@ func main() {
 
 	conn, err := kafka.DialLeader(context.Background(), "tcp", "localhost:9092", "answer-messages", 0)
 	if err != nil {
-		if err != nil {
-			log.Printf("An Error Occured %v", err)
-		}
+		log.Fatalf("An Error Occured %v", err)
 	}
+
 	defer conn.Close()
 
 	for {
