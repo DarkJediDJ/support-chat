@@ -17,6 +17,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("An Error Occured %v", err)
 	}
+  
 	defer conn.Close()
 
 	a.InitRouter(conn)
