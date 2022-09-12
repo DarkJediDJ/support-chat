@@ -9,6 +9,8 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
+var ch = make(chan i.IncMessage)
+
 func main() {
 
 	reader := i.KafkaReader("localhost:9092", "user-messages")
@@ -38,13 +40,17 @@ func main() {
 
 		message.Answer = "hi,aboba"
 
-		outMesssage, err := json.Marshal(message)
-		if err != nil {
-			log.Printf("An Error Occured %v", err)
-			continue
-		}
+		go func(c chan i.IncMessage) {
+			outMesssage, err := json.Marshal(<-ch)
+			if err != nil {
+				log.Printf("An Error Occured %v", err)
+				return
+			}
 
-		i.KafkaWriter(conn, string(outMesssage))
+			i.KafkaWriter(conn, string(outMesssage))
+		}(ch)
+
+		ch <- message
 	}
 
 }
