@@ -11,12 +11,14 @@ import (
 const addr = ":8080"
 
 func main() {
-	a := server.Init()
+	a := server.NewApp()
 
 	conn, err := kafka.DialLeader(context.Background(), "tcp", "localhost:9092", "user-messages", 0)
 	if err != nil {
 		log.Fatalf("An Error Occured %v", err)
 	}
+  
+	defer conn.Close()
 
 	a.InitRouter(conn)
 

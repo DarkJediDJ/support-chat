@@ -13,7 +13,7 @@ type App struct {
 	Router *mux.Router
 }
 
-func Init() *App {
+func NewApp() *App {
 	return &App{}
 }
 
